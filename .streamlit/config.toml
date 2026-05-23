@@ -1,0 +1,19 @@
+# Force permanent dark enterprise theme (Delivery ETA Intelligence)
+# Prevents Streamlit light/system theme from overriding custom CSS.
+
+[theme]
+base = "dark"
+primaryColor = "#22d3ee"
+backgroundColor = "#081225"
+secondaryBackgroundColor = "#111827"
+textColor = "#f1f5f9"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

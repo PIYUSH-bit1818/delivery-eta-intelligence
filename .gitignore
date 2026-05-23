@@ -1,0 +1,142 @@
+# =========================================================
+# Python
+# =========================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# =========================================================
+# Jupyter
+# =========================================================
+
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# =========================================================
+# IDE / Editor
+# =========================================================
+
+.idea/
+.vscode/
+
+*.swp
+*.swo
+*~
+
+# =========================================================
+# OS Files
+# =========================================================
+
+.DS_Store
+*.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================================================
+# Data (large local datasets)
+# =========================================================
+
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/README.md
+
+data/external/*
+!data/external/.gitkeep
+!data/external/README.md
+
+# =========================================================
+# Models
+# =========================================================
+
+models/*.pkl
+models/*.joblib
+
+!models/.gitkeep
+!models/README.md
+!models/model_metadata.json
+
+# =========================================================
+# Generated outputs
+# =========================================================
+
+outputs/figures/*
+!outputs/figures/.gitkeep
+
+outputs/reports/*
+!outputs/reports/.gitkeep
+
+outputs/tables/*
+!outputs/tables/.gitkeep
+
+outputs/predictions/*
+!outputs/predictions/.gitkeep
+!outputs/predictions/sample_predictions.csv
+
+# =========================================================
+# Secrets / Environment
+# =========================================================
+
+.env
+.env.*
+!.env.example
+
+secrets/
+*.pem
+credentials.json
+
+# =========================================================
+# Logs / Cache
+# =========================================================
+
+*.log
+
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =========================================================
+# Streamlit
+# =========================================================
+
+.streamlit/secrets.toml
+.streamlit/cache/
+
+# =========================================================
+# Misc
+# =========================================================
+
+*.docx
+*.tmp
+*.bak
