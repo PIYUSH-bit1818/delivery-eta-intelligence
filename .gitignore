@@ -79,8 +79,8 @@ data/external/*
 # Models
 # =========================================================
 
-models/*.pkl
-models/*.joblib
+# models/*.pkl
+# models/*.joblib
 
 !models/.gitkeep
 !models/README.md
