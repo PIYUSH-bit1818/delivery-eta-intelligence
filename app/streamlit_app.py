@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import sys
+import textwrap
 from datetime import datetime
 from pathlib import Path
 
@@ -31,8 +32,10 @@ from src.config import get_paths
 from src.dashboard_theme import (
     PLOTLY_CHART_CONFIG,
     get_custom_css,
+    render_bottleneck_alert,
     render_compact_table_html,
     render_empty_state_card,
+    render_insight_box,
     render_kpi_card,
     render_prediction_card,
 )
@@ -69,7 +72,7 @@ paths = get_paths(ROOT)
 
 def _html(content: str) -> None:
     """Render HTML reliably (never use st.write for markup)."""
-    st.markdown(content, unsafe_allow_html=True)
+    st.markdown(textwrap.dedent(content).strip(), unsafe_allow_html=True)
 
 
 def _section(title: str, *, top: bool = False) -> None:
@@ -362,6 +365,9 @@ with tab_predictions:
                 r.bottleneck_warning,
             )
         )
+        if r.bottleneck_warning:
+            _html(render_bottleneck_alert())
+        _html(render_insight_box(r.insights, label="Route insights"))
         plot_chart(
             plot_confidence_band_bar(r.predicted_eta, r.confidence_low, r.confidence_high, r.osrm_baseline),
             height=220,

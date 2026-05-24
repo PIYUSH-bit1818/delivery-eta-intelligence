@@ -614,17 +614,35 @@ def get_custom_css() -> str:
     .alert-box {{
         background: rgba(244, 63, 94, 0.12);
         border: 1px solid rgba(244, 63, 94, 0.35);
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 0.85rem 1rem;
         color: #fecdd3;
         margin: 0.65rem 0;
+        font-size: 0.95rem;
+        line-height: 1.45;
     }}
     .insight-box {{
-        background: {card};
-        border-left: 3px solid {c['purple']};
-        border-radius: 0 10px 10px 0;
-        padding: 0.85rem 1rem;
-        color: {c['text_muted']};
+        background: rgba(255, 255, 255, 0.03);
+        border-left: 4px solid #a855f7;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+        color: #dbeafe;
+        margin-top: 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }}
+    .insight-box .insight-label {{
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #a855f7;
+        margin-bottom: 0.35rem;
+    }}
+    .insight-box p {{
+        margin: 0;
+        color: #dbeafe;
     }}
     .network-panel {{
         background: {card};
@@ -709,6 +727,25 @@ def render_kpi_row(cards: list[str]) -> str:
     return f'<div class="kpi-grid">{"".join(cards)}</div>'
 
 
+def render_bottleneck_alert() -> str:
+    """HTML for bottleneck warning banner (single-line — safe for Streamlit markdown)."""
+    return (
+        '<div class="alert-box">⚠️ <strong>Bottleneck alert</strong> — '
+        "trip touches high-stress hub(s). Consider alternate routing or capacity buffer."
+        "</div>"
+    )
+
+
+def render_insight_box(insights: str, *, label: str = "Route insights") -> str:
+    """Styled insight card for prediction commentary."""
+    safe = html.escape(str(insights).strip())
+    return (
+        f'<div class="insight-box">'
+        f'<span class="insight-label">{html.escape(label)}</span>'
+        f"<p>💡 {safe}</p></div>"
+    )
+
+
 def render_prediction_card(
     predicted_eta: float,
     risk_level: str,
@@ -719,23 +756,17 @@ def render_prediction_card(
     insights: str,
     bottleneck_warning: bool,
 ) -> str:
+    """Core prediction metrics card (alert + insights rendered separately in the app)."""
+    del insights, bottleneck_warning
     rc = risk_color(risk_level)
-    alert = ""
-    if bottleneck_warning:
-        alert = (
-            '<div class="alert-box">⚠️ <strong>Bottleneck alert</strong> — '
-            "trip touches high-stress hub(s). Consider alternate routing or capacity buffer.</div>"
-        )
-    return f"""
-    <div class="pred-card">
-        <div style="color:#94a3b8;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;">Predicted ETA</div>
-        <div class="pred-eta" style="color:{rc};">{predicted_eta:.1f}
-            <span style="font-size:1.1rem;color:#94a3b8;"> min</span></div>
-        <span class="risk-pill" style="background:{rc}22;border:1px solid {rc};color:{rc};">{risk_level} RISK</span>
-        <p style="color:#94a3b8;margin-top:0.85rem;">Lane: <strong style="color:#f8fafc;">{route_lane}</strong></p>
-        <p style="color:#94a3b8;">OSRM: <strong>{osrm_baseline:.1f}</strong> min · Band:
-            <strong>{confidence_low:.1f} – {confidence_high:.1f}</strong> min</p>
-        {alert}
-        <div class="insight-box" style="margin-top:0.85rem;">💡 {insights}</div>
-    </div>
-    """
+    return (
+        '<div class="pred-card">'
+        '<div style="color:#94a3b8;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;">Predicted ETA</div>'
+        f'<div class="pred-eta" style="color:{rc};">{predicted_eta:.1f}'
+        f'<span style="font-size:1.1rem;color:#94a3b8;"> min</span></div>'
+        f'<span class="risk-pill" style="background:{rc}22;border:1px solid {rc};color:{rc};">{html.escape(str(risk_level))} RISK</span>'
+        f'<p style="color:#94a3b8;margin-top:0.85rem;">Lane: <strong style="color:#f8fafc;">{html.escape(str(route_lane))}</strong></p>'
+        f'<p style="color:#94a3b8;">OSRM: <strong>{osrm_baseline:.1f}</strong> min · Band: '
+        f"<strong>{confidence_low:.1f} – {confidence_high:.1f}</strong> min</p>"
+        "</div>"
+    )
